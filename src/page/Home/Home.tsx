@@ -47,6 +47,20 @@ const styles = (theme: Theme) =>
         padding: theme.spacing(2),
       },
     },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(0),
+      background: theme.palette.background.default,
+      height: "100vh",
+      overflowX: "scroll",
+    },
+    toolbar: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      padding: theme.spacing(0, 1),
+      ...theme.mixins.toolbar,
+    },
   });
 
 class Home extends React.Component<Props & WithStyles<typeof styles>, State> {
@@ -83,7 +97,7 @@ class Home extends React.Component<Props & WithStyles<typeof styles>, State> {
     const { drawerOpen } = this.state;
     const { classes } = this.props;
     return (
-      <div>
+      <div className={classes.root}>
         <AppToolBar
           title="Swiggy-Test"
           handleDrawer={this.handleDrawer}
@@ -107,24 +121,31 @@ class Home extends React.Component<Props & WithStyles<typeof styles>, State> {
             <Divider />
           </div>
         </AppDrawer>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.handleAddTask}
-        >
-          {"Add Task"}
-        </Button>
-        <Button variant="contained" color="primary" onClick={this.handleAddTag}>
-          {"Add Tags"}
-        </Button>
-        <TaskDialog
-          open={this.state.taskDialog}
-          handleClose={this.handleAddTaskClose}
-        />
-        <TagDialog
-          open={this.state.tagDialog}
-          handleClose={this.handleAddTagClose}
-        />
+        <main className={classes.content} id="mainview">
+          <div className={classes.toolbar} />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.handleAddTask}
+          >
+            {"Add Task"}
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.handleAddTag}
+          >
+            {"Add Tags"}
+          </Button>
+          <TaskDialog
+            open={this.state.taskDialog}
+            handleClose={this.handleAddTaskClose}
+          />
+          <TagDialog
+            open={this.state.tagDialog}
+            handleClose={this.handleAddTagClose}
+          />
+        </main>
       </div>
     );
   }
