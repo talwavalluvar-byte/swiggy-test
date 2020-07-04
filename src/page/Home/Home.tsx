@@ -1,9 +1,17 @@
 import React from "react";
 import { WithStyles, createStyles, withStyles } from "@material-ui/styles";
-import { Theme } from "@material-ui/core";
+import { Theme, Avatar } from "@material-ui/core";
 import { Button } from "@material-ui/core";
 import TaskDialog from "./component/TaskDialog";
 import TagDialog from "./component/TagDialog";
+import AppToolBar from "./component/AppToolBar";
+
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemText from "@material-ui/core/ListItemText";
+import AppDrawer from "./component/AppDrawer";
 
 type State = {
   loading: boolean;
@@ -11,6 +19,7 @@ type State = {
   resolved: boolean;
   taskDialog: boolean;
   tagDialog: boolean;
+  drawerOpen: boolean;
 };
 
 type Props = {};
@@ -19,6 +28,24 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      display: "flex",
+      flexWrap: "wrap",
+    },
+    drawerContainer: {
+      marginTop: theme.spacing(8),
+    },
+    listItems: {
+      padding: theme.spacing(1),
+      [theme.breakpoints.up("sm")]: {
+        padding: theme.spacing(2),
+      },
+    },
+    listItemsSel: {
+      background: theme.palette.secondary.dark,
+      padding: theme.spacing(1),
+      [theme.breakpoints.up("sm")]: {
+        padding: theme.spacing(2),
+      },
     },
   });
 
@@ -29,6 +56,7 @@ class Home extends React.Component<Props & WithStyles<typeof styles>, State> {
     resolved: false,
     taskDialog: false,
     tagDialog: false,
+    drawerOpen: false,
   };
 
   handleAddTask = () => {
@@ -47,9 +75,38 @@ class Home extends React.Component<Props & WithStyles<typeof styles>, State> {
     this.setState({ tagDialog: false });
   };
 
+  handleDrawer = () => {
+    this.setState({ drawerOpen: !this.state.drawerOpen });
+  };
+
   render() {
+    const { drawerOpen } = this.state;
+    const { classes } = this.props;
     return (
       <div>
+        <AppToolBar
+          title="Swiggy-Test"
+          handleDrawer={this.handleDrawer}
+          drawerOpen={drawerOpen}
+        />
+        <AppDrawer drawerOpen={drawerOpen}>
+          <div className={classes.drawerContainer}>
+            <List>
+              <ListItem className={classes.listItems} button key={"profile"}>
+                <ListItemAvatar
+                  children={
+                    <Avatar
+                      alt="Ashish Chaudhary"
+                      src="/static/images/avatar/1.jpg"
+                    />
+                  }
+                />
+                <ListItemText primary="Profile" />
+              </ListItem>
+            </List>
+            <Divider />
+          </div>
+        </AppDrawer>
         <Button
           variant="contained"
           color="primary"
