@@ -1,9 +1,11 @@
 import React, { Component, ReactNode } from "react";
+import { ApolloClient } from "apollo-client";
 
 export type SessionContextType = {
   resolved?: boolean;
   loading?: boolean;
   error?: any;
+  client?: ApolloClient<any>;
   logout?: () => Promise<boolean>;
   clearClientDB?: () => Promise<boolean>;
   clearLocalStorage?: () => void;
@@ -13,6 +15,7 @@ const defaultState: SessionContextType = {
   resolved: false,
   loading: false,
   error: null,
+  client: undefined,
   logout: undefined,
   clearClientDB: undefined,
   clearLocalStorage: undefined,
@@ -24,7 +27,7 @@ const { Consumer, Provider } = Context;
 
 export { Consumer, Context };
 
-type Props = { children: ReactNode };
+type Props = { children: ReactNode; client: ApolloClient<any> };
 
 type State = {
   resolved: boolean;
@@ -39,13 +42,13 @@ class SessionProvider extends Component<Props, State> {
     error: null,
   };
 
-  componentDidMount() {}
-
   render() {
     const { resolved } = this.state;
     return (
       resolved && (
-        <Provider value={{ ...this.state }}>{this.props.children}</Provider>
+        <Provider value={{ ...this.state, client: this.props.client }}>
+          {this.props.children}
+        </Provider>
       )
     );
   }

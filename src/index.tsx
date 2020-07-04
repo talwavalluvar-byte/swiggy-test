@@ -5,11 +5,15 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import AppThemeProvider from "./utils/theme";
 import LocaleProvider from "./utils/i18n";
+import SessionProvider from "./session";
+import { testClient } from "./utils/client/testClient";
 
 ReactDOM.render(
   <AppThemeProvider>
     <LocaleProvider>
-      <App />
+      <SessionProvider client={testClient}>
+        <App />
+      </SessionProvider>
     </LocaleProvider>
   </AppThemeProvider>,
   document.getElementById("root")
